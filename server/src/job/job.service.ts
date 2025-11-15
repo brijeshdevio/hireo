@@ -4,7 +4,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model, isValidObjectId } from 'mongoose';
 import { Job } from 'src/schema/job.schema';
 import { CreateJobDto } from './dto';
 
@@ -13,7 +13,7 @@ export class JobService {
   constructor(@InjectModel(Job.name) private readonly jobModel: Model<Job>) {}
 
   private isValidId(id: string): boolean {
-    if (Types.ObjectId.isValid(id)) {
+    if (isValidObjectId(id)) {
       return true;
     }
     throw new BadRequestException(`Invalid job ID: ${id}`);
