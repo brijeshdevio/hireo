@@ -36,7 +36,8 @@ export function NewJob() {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     const data = Object.fromEntries(form.entries());
-    data.qualifications = data.qualifications?.split("\n");
+    data.qualifications = data.qualifications?.toString();
+    data.qualifications = data.qualifications?.split("\n") as unknown as string;
     createJob.mutate(data as unknown as CreateJobType);
     e.currentTarget.reset();
   };
