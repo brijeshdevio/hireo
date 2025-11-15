@@ -1,9 +1,11 @@
 import { JobCard, Searchbar } from "@/components";
-import { jobs } from "../../data/jobs";
+// import { jobs } from "../../data/jobs";
 import type { JobCardProps } from "@/types";
 import { useState } from "react";
+import { useJob } from "@/hooks/useJob";
 
 export function Home() {
+  const { getJobs } = useJob();
   const [query, setQuery] = useState("");
 
   console.log("Search Query:", query);
@@ -19,7 +21,7 @@ export function Home() {
       <section>
         <h2 className="fw-bold">All Jobs</h2>
         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
-          {jobs.map((job: JobCardProps) => (
+          {getJobs?.data?.map((job: JobCardProps) => (
             <div key={job._id} className="col">
               <JobCard {...job} />
             </div>
