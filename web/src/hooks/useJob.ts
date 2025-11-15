@@ -44,6 +44,12 @@ export const useJob = () => {
       toast.success("Job deleted successfully!");
       await clientQuery.invalidateQueries(["jobs"]);
     },
+    onError: (error: unknown) => {
+      if (isAxiosError(error)) {
+        const message = error?.response?.data?.message || error.message;
+        toast.error(message);
+      }
+    },
   });
 
   return {
