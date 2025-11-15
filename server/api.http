@@ -27,3 +27,7 @@ GET http://localhost:3000/jobs
 
 ### GET - /jobs/:ID
 GET http://localhost:3000/jobs/6918281d605a7c840be09045
+
+
+### DELETE - /jobs/:ID
+DELETE http://localhost:3000/jobs/6918281d605a7c840be09045

@@ -39,4 +39,15 @@ export class JobService {
     if (job) return job;
     throw new ForbiddenException('You do not have access to this Job.');
   }
+
+  async deleteJobById(jobId: string): Promise<Job> {
+    this.isValidId(jobId);
+
+    const job = await this.jobModel
+      .findByIdAndDelete(jobId)
+      .lean()
+      .select('-__v -createdAt');
+    if (job) return job;
+    throw new ForbiddenException('You do not have access to delete this Job.');
+  }
 }

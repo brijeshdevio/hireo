@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { JobService } from './job.service';
 import { CreateJobDto } from './dto';
 
@@ -22,5 +22,11 @@ export class JobController {
   async handleFindJobById(@Param('id') jobId: string) {
     const job = await this.jobService.findJobById(jobId);
     return job;
+  }
+
+  @Delete(':id')
+  async handleDeleteJobById(@Param('id') jobId: string) {
+    await this.jobService.deleteJobById(jobId);
+    return { message: 'Job deleted successfully' };
   }
 }
