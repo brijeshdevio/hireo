@@ -24,8 +24,17 @@ export class JobService {
     return newJob;
   }
 
-  async findJobs(): Promise<Job[]> {
-    const jobs = await this.jobModel.find().lean().select('-__v -createdAt');
+  async findJobs(query?: string): Promise<Job[]> {
+    const queries: Record<string, unknown> = {};
+
+    if (query) {
+      queries.title = { $regex: query, $options: 'i' };
+    }
+
+    const jobs = await this.jobModel
+      .find(queries)
+      .lean()
+      .select('-__v -createdAt');
     return jobs;
   }
 

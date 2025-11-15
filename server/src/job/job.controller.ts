@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { JobService } from './job.service';
 import { CreateJobDto } from './dto';
 
@@ -13,8 +21,8 @@ export class JobController {
   }
 
   @Get()
-  async handleFindJobs() {
-    const jobs = await this.jobService.findJobs();
+  async handleFindJobs(@Query('q') query?: string) {
+    const jobs = await this.jobService.findJobs(query);
     return jobs;
   }
 
