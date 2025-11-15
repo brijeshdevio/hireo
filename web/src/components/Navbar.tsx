@@ -25,7 +25,7 @@ export function Navbar() {
                 className={({ isActive }) =>
                   `nav-link ${isActive ? "active" : ""}`
                 }
-                to="/job-postings"
+                to="/"
               >
                 Job Postings
               </NavLink>
