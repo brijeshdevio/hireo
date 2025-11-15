@@ -1,7 +1,14 @@
-import type { JobCardProps } from "@/types";
 import { Link } from "react-router-dom";
+import { useJob } from "@/hooks/useJob";
+import type { JobCardProps } from "@/types";
 
 export function JobCard({ _id, title, company, location, type }: JobCardProps) {
+  const { deleteJob } = useJob();
+
+  const handleDelete = () => {
+    deleteJob.mutate(_id);
+  };
+
   return (
     <div className="card">
       <div className="card-body">
@@ -25,7 +32,12 @@ export function JobCard({ _id, title, company, location, type }: JobCardProps) {
           >
             See Details
           </Link>
-          <button className="btn btn-danger rounded-3 px-4">Delete</button>
+          <button
+            className="btn btn-danger rounded-3 px-4"
+            onClick={handleDelete}
+          >
+            Delete
+          </button>
         </div>
       </div>
     </div>
