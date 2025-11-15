@@ -13,7 +13,7 @@ export class JobService {
   constructor(@InjectModel(Job.name) private readonly jobModel: Model<Job>) {}
 
   private isValidId(id: string): boolean {
-    if (Types.ObjectId.isValid(id)) {
+    if (Types.ObjectId.isValid(id as unknown as Types.ObjectId)) {
       return true;
     }
     throw new BadRequestException(`Invalid job ID: ${id}`);

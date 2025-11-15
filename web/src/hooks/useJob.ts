@@ -1,5 +1,9 @@
 import { createJob, deleteJob, getJob, getJobs } from "@/api/job.api";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  type InvalidateQueryFilters,
+} from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { toast } from "sonner";
 import type { CreateJobType } from "@/types";
@@ -11,7 +15,9 @@ export const useJob = () => {
     mutationFn: (data: CreateJobType) => createJob(data),
     onSuccess: async () => {
       toast.success("Job created successfully!");
-      await clientQuery.invalidateQueries(["jobs"]);
+      await clientQuery.invalidateQueries(["jobs"] as InvalidateQueryFilters<
+        readonly unknown[]
+      >);
     },
     onError: (error: unknown) => {
       if (isAxiosError(error)) {
@@ -43,7 +49,9 @@ export const useJob = () => {
     mutationFn: (id: string) => deleteJob(id),
     onSuccess: async () => {
       toast.success("Job deleted successfully!");
-      await clientQuery.invalidateQueries(["jobs"]);
+      await clientQuery.invalidateQueries(["jobs"] as InvalidateQueryFilters<
+        readonly unknown[]
+      >);
     },
     onError: (error: unknown) => {
       if (isAxiosError(error)) {
