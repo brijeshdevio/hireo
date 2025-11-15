@@ -1,4 +1,5 @@
 import { createJob, deleteJob, getJob, getJobs } from "@/api/job.api";
+import type { CreateJobType } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { toast } from "sonner";
@@ -7,7 +8,7 @@ export const useJob = () => {
   const clientQuery = useQueryClient();
 
   const createNewJob = useMutation({
-    mutationFn: (data: any) => createJob(data),
+    mutationFn: (data: CreateJobType) => createJob(data),
     onSuccess: async () => {
       toast.success("Job created successfully!");
       await clientQuery.invalidateQueries(["jobs"]);

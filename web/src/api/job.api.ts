@@ -1,6 +1,7 @@
+import type { CreateJobType } from "@/types";
 import { axiosClient } from "./axiosClient";
 
-export const createJob = async (data: any) => {
+export const createJob = async (data: CreateJobType) => {
   const response = await axiosClient.post("/jobs", data);
   return response.data;
 };

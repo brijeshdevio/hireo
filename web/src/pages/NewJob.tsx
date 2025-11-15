@@ -1,4 +1,5 @@
 import { useJob } from "@/hooks/useJob";
+import type { CreateJobType } from "@/types";
 
 const formFields = [
   {
@@ -36,7 +37,7 @@ export function NewJob() {
     const form = new FormData(e.currentTarget);
     const data = Object.fromEntries(form.entries());
     data.qualifications = data.qualifications?.split("\n");
-    createJob.mutate(data);
+    createJob.mutate(data as unknown as CreateJobType);
     e.currentTarget.reset();
   };
 

@@ -1,5 +1,4 @@
 import { JobCard, Searchbar } from "@/components";
-// import { jobs } from "../../data/jobs";
 import type { JobCardProps } from "@/types";
 import { useState } from "react";
 import { useJob } from "@/hooks/useJob";
