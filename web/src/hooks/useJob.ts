@@ -1,5 +1,6 @@
 import { deleteJob, getJobs } from "@/api/job.api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export const useJob = () => {
   const clientQuery = useQueryClient();
@@ -11,8 +12,9 @@ export const useJob = () => {
 
   const deleteJobById = useMutation({
     mutationFn: (id: string) => deleteJob(id),
-    onSuccess: () => {
-      clientQuery.invalidateQueries(["jobs"]);
+    onSuccess: async () => {
+      toast.success("Job deleted successfully!");
+      await clientQuery.invalidateQueries(["jobs"]);
     },
   });
 
