@@ -1,10 +1,24 @@
-import { deleteJob, getJob, getJobs } from "@/api/job.api";
+import { createJob, deleteJob, getJob, getJobs } from "@/api/job.api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { toast } from "sonner";
 
 export const useJob = () => {
   const clientQuery = useQueryClient();
+
+  const createNewJob = useMutation({
+    mutationFn: (data: any) => createJob(data),
+    onSuccess: async () => {
+      toast.success("Job created successfully!");
+      await clientQuery.invalidateQueries(["jobs"]);
+    },
+    onError: (error: unknown) => {
+      if (isAxiosError(error)) {
+        const message = error?.response?.data?.message || error.message;
+        toast.error(message);
+      }
+    },
+  });
 
   const findJobs = useQuery({
     queryKey: ["jobs"],
@@ -33,6 +47,7 @@ export const useJob = () => {
   });
 
   return {
+    createJob: createNewJob,
     getJobs: findJobs,
     getJob: findJob,
     deleteJob: deleteJobById,
