@@ -1,5 +1,6 @@
-import { deleteJob, getJobs } from "@/api/job.api";
+import { deleteJob, getJob, getJobs } from "@/api/job.api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 import { toast } from "sonner";
 
 export const useJob = () => {
@@ -8,6 +9,19 @@ export const useJob = () => {
   const findJobs = useQuery({
     queryKey: ["jobs"],
     queryFn: async () => getJobs(),
+  });
+
+  const findJob = useMutation({
+    mutationFn: (id: string) => getJob(id),
+    onSuccess: (data) => {
+      clientQuery.setQueryData(["job", data?._id as string], data);
+    },
+    onError: (error: unknown) => {
+      if (isAxiosError(error)) {
+        const message = error?.response?.data?.message || error.message;
+        toast.error(message);
+      }
+    },
   });
 
   const deleteJobById = useMutation({
@@ -20,6 +34,7 @@ export const useJob = () => {
 
   return {
     getJobs: findJobs,
+    getJob: findJob,
     deleteJob: deleteJobById,
   };
 };

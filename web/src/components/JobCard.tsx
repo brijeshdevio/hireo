@@ -26,10 +26,7 @@ export function JobCard({ _id, title, company, location, type }: JobCardProps) {
           <span>{type}</span>
         </div>
         <div className="mt-3 d-flex justify-content-start gap-2">
-          <Link
-            to={`/job-postings/${_id}`}
-            className="btn btn-primary rounded-3 px-4"
-          >
+          <Link to={`/jobs/${_id}`} className="btn btn-primary rounded-3 px-4">
             See Details
           </Link>
           <button
