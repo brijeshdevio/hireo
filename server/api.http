@@ -1,0 +1,29 @@
+### GET - /
+GET http://localhost:3000/
+
+
+### POST - /jobs
+POST http://localhost:3000/jobs
+Content-Type: application/json
+
+{
+  "title": "Project Manager",
+  "company": "Skyline Construction",
+  "location": "Denver, CO",
+  "salary": "$80,000 - $110,000",
+  "type": "Full-time",
+  "description": "Oversee projects from conception to completion while managing  teams and resources.",
+  "qualifications": [
+    "PMP certification preferred",
+    "5+ years project management experience",
+    "Excellent organizational skills"
+   ]
+}
+
+
+### GET - /jobs
+GET http://localhost:3000/jobs
+
+
+### GET - /jobs/:ID
+GET http://localhost:3000/jobs/6918281d605a7c840be09045
