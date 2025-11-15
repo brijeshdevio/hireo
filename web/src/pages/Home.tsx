@@ -1,13 +1,18 @@
 import { JobCard, Searchbar } from "@/components";
 import { jobs } from "../../data/jobs";
 import type { JobCardProps } from "@/types";
+import { useState } from "react";
 
 export function Home() {
+  const [query, setQuery] = useState("");
+
+  console.log("Search Query:", query);
+
   return (
     <main className="container my-3">
       {/* Searchbar */}
       <section className="mb-2">
-        <Searchbar />
+        <Searchbar setQuery={setQuery} />
       </section>
 
       {/* Job Cards */}
