@@ -1,4 +1,4 @@
-import { JobCard, Searchbar } from "@/components";
+import { JobCard, Loading, Searchbar } from "@/components";
 import type { JobCardProps } from "@/types";
 import { useState } from "react";
 import { useJob } from "@/hooks/useJob";
@@ -19,6 +19,7 @@ export function Home() {
       {/* Job Cards */}
       <section>
         <h2 className="fw-bold">All Jobs</h2>
+        <Loading isPending={getJobs.isPending} />
         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
           {getJobs?.data?.map((job: JobCardProps) => (
             <div key={job._id} className="col">

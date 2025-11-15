@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
 import { useJob } from "@/hooks/useJob";
 import type { JobCardProps } from "@/types";
+import { useState } from "react";
 
 export function JobCard({ _id, title, company, location, type }: JobCardProps) {
   const { deleteJob } = useJob();
+  const [jobId, setJobId] = useState("");
 
   const handleDelete = () => {
+    setJobId(_id);
     deleteJob.mutate(_id);
   };
 
@@ -32,8 +35,13 @@ export function JobCard({ _id, title, company, location, type }: JobCardProps) {
           <button
             className="btn btn-danger rounded-3 px-4"
             onClick={handleDelete}
+            disabled={jobId === _id}
           >
-            Delete
+            {deleteJob.isPending && jobId === _id ? (
+              <span className="spinner-border spinner-border-sm"></span>
+            ) : (
+              "Delete"
+            )}
           </button>
         </div>
       </div>

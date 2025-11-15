@@ -1,3 +1,4 @@
+import { Loading } from "@/components";
 import { useJob } from "@/hooks/useJob";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -20,6 +21,10 @@ export function JobDetails() {
         </section>
       </main>
     );
+  }
+
+  if (getJob.isPending) {
+    return <Loading isPending={getJob.isPending} />;
   }
 
   return (
