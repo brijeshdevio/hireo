@@ -1,17 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function Searchbar({
   setQuery = () => {},
 }: {
   setQuery: (query: string) => void;
 }) {
-  const [inputValue, setInputValue] = useState("");
+  const [value, setValue] = useState("");
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setInputValue(value);
-    setQuery(value);
-  };
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setQuery(value);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, setQuery]);
 
   return (
     <div>
@@ -19,8 +23,8 @@ export function Searchbar({
         type="text"
         placeholder="Search..."
         className="form-control"
-        value={inputValue}
-        onChange={handleInputChange}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
       />
     </div>
   );

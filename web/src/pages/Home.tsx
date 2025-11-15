@@ -1,13 +1,19 @@
 import { JobCard, Loading, Searchbar } from "@/components";
 import type { JobCardProps } from "@/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useJob } from "@/hooks/useJob";
 
 export function Home() {
   const { getJobs } = useJob();
   const [query, setQuery] = useState("");
 
-  console.log("Search Query:", query);
+  useEffect(() => {
+    getJobs.mutate(query);
+  }, []);
+
+  useEffect(() => {
+    getJobs.mutate(query);
+  }, [query]);
 
   return (
     <main className="container my-3">

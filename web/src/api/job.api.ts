@@ -6,8 +6,8 @@ export const createJob = async (data: CreateJobType) => {
   return response.data;
 };
 
-export const getJobs = async () => {
-  const response = await axiosClient.get("/jobs");
+export const getJobs = async (query: string) => {
+  const response = await axiosClient.get("/jobs", { params: { q: query } });
   return response.data;
 };
 

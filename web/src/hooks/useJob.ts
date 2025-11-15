@@ -1,8 +1,8 @@
 import { createJob, deleteJob, getJob, getJobs } from "@/api/job.api";
-import type { CreateJobType } from "@/types";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { toast } from "sonner";
+import type { CreateJobType } from "@/types";
 
 export const useJob = () => {
   const clientQuery = useQueryClient();
@@ -21,9 +21,9 @@ export const useJob = () => {
     },
   });
 
-  const findJobs = useQuery({
-    queryKey: ["jobs"],
-    queryFn: async () => getJobs(),
+  const findJobs = useMutation({
+    mutationKey: ["jobs"],
+    mutationFn: async (query: string) => getJobs(query),
   });
 
   const findJob = useMutation({
