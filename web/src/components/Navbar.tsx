@@ -2,8 +2,8 @@ import { Link, NavLink } from "react-router-dom";
 
 export function Navbar() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary px-5">
-      <div className="container-fluid">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div className="container">
         <Link className="navbar-brand fw-bold" to="/">
           Hireo
         </Link>
