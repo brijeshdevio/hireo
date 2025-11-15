@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
 
 const hosts = process.env.HOSTS_URI as string;
 const allowHosts = hosts?.split(' ');
@@ -11,6 +12,7 @@ async function bootstrap() {
   app.enableCors({
     origin: allowHosts,
   });
+  app.useGlobalPipes(new ValidationPipe());
   const config = new DocumentBuilder()
     .setTitle('Hireo – Modern Job Posting Web App')
     .setDescription(
