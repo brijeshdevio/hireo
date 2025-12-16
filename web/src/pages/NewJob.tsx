@@ -6,26 +6,25 @@ const formFields = [
     name: "title",
     type: "text",
     label: "Job Title",
+    placeholder: "e.g. Senior Software Engineer",
   },
   {
     name: "company",
     type: "text",
     label: "Company Name",
+    placeholder: "e.g. TechNova Solutions",
   },
   {
     name: "location",
     type: "text",
     label: "Location",
+    placeholder: "e.g. San Francisco, CA or Remote",
   },
   {
     name: "salary",
     type: "text",
     label: "Salary",
-  },
-  {
-    name: "type",
-    type: "text",
-    label: "Job Type",
+    placeholder: "e.g. $80,000 – $120,000 per year",
   },
 ];
 
@@ -37,7 +36,7 @@ export function NewJob() {
     const form = new FormData(e.currentTarget);
     const data = Object.fromEntries(form.entries());
     data.qualifications = data.qualifications?.toString();
-    data.qualifications = data.qualifications?.split("\n") as unknown as string;
+    data.qualifications = data.qualifications?.split(",") as unknown as string;
     createJob.mutate(data as unknown as CreateJobType);
     e.currentTarget.reset();
   };
@@ -58,9 +57,22 @@ export function NewJob() {
                 id={field.name}
                 name={field.name}
                 required
+                placeholder={field.placeholder}
               />
             </div>
           ))}
+          <div className="mb-3">
+            <label htmlFor={"jobType"} className="form-label">
+              Job Type
+            </label>
+            <select name="type" id="jobType" className="form-select">
+              <option value="Full Time">Full Time</option>
+              <option value="Part Time">Part Time</option>
+              <option value="Internship">Internship</option>
+              <option value="Contract">Contract</option>
+              <option value="Temporary">Temporary</option>
+            </select>
+          </div>
           <div className="mb-3">
             <label htmlFor={"description"} className="form-label">
               Job Description
@@ -71,6 +83,7 @@ export function NewJob() {
               name={"description"}
               rows={2}
               required
+              placeholder="Briefly describe the role, responsibilities, and expectations of the job."
             ></textarea>
           </div>
           <div className="mb-3">
@@ -83,6 +96,7 @@ export function NewJob() {
               name={"qualifications"}
               rows={2}
               required
+              placeholder="e.g. Bachelor's degree, JavaScript, React, 3+ years experience"
             ></textarea>
           </div>
           <button

@@ -1,19 +1,14 @@
 import { JobCard, Loading, Searchbar } from "@/components";
 import type { JobCardProps } from "@/types";
-import { useEffect, useState } from "react";
 import { useJob } from "@/hooks/useJob";
+import { useEffect } from "react";
 
 export function Home() {
-  const { getJobs } = useJob();
-  const [query, setQuery] = useState("");
+  const { jobs, setQuery, isFindJobPending, fetchJobs } = useJob();
 
   useEffect(() => {
-    getJobs.mutate(query);
-  }, []);
-
-  useEffect(() => {
-    getJobs.mutate(query);
-  }, [query]);
+    fetchJobs();
+  }, [fetchJobs]);
 
   return (
     <main className="container my-3">
@@ -25,14 +20,19 @@ export function Home() {
       {/* Job Cards */}
       <section>
         <h2 className="fw-bold">All Jobs</h2>
-        <Loading isPending={getJobs.isPending} />
+        <Loading isPending={isFindJobPending} />
         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
-          {getJobs?.data?.map((job: JobCardProps) => (
+          {jobs?.map((job: JobCardProps) => (
             <div key={job._id} className="col">
               <JobCard {...job} />
             </div>
           ))}
         </div>
+        {jobs?.length === 0 && !isFindJobPending && (
+          <div className="py-5 d-flex align-items-center justify-content-center">
+            <p>No jobs found</p>
+          </div>
+        )}
       </section>
     </main>
   );

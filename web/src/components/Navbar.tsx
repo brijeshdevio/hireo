@@ -1,3 +1,4 @@
+import { BriefcaseBusiness } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 
 export function Navbar() {
@@ -5,6 +6,7 @@ export function Navbar() {
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <div className="container">
         <Link className="navbar-brand fw-bold" to="/">
+          <BriefcaseBusiness className="me-2" size={30} />
           Hireo
         </Link>
         <button

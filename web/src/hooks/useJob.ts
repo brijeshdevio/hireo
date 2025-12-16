@@ -1,23 +1,21 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { createJob, deleteJob, getJob, getJobs } from "@/api/job.api";
-import {
-  useMutation,
-  useQueryClient,
-  type InvalidateQueryFilters,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { toast } from "sonner";
 import type { CreateJobType } from "@/types";
 
 export const useJob = () => {
-  const clientQuery = useQueryClient();
+  const [query, setQuery] = useState("");
+  const queryClient = useQueryClient();
+  const { id } = useParams();
 
   const createNewJob = useMutation({
     mutationFn: (data: CreateJobType) => createJob(data),
     onSuccess: async () => {
       toast.success("Job created successfully!");
-      await clientQuery.invalidateQueries(["jobs"] as InvalidateQueryFilters<
-        readonly unknown[]
-      >);
+      await queryClient.invalidateQueries({ queryKey: ["jobs", query] });
     },
     onError: (error: unknown) => {
       if (isAxiosError(error)) {
@@ -27,31 +25,25 @@ export const useJob = () => {
     },
   });
 
-  const findJobs = useMutation({
-    mutationKey: ["jobs"],
-    mutationFn: async (query: string) => getJobs(query),
+  const findJobs = useQuery({
+    queryKey: ["jobs", query],
+    queryFn: async () => getJobs(query),
+    enabled: false,
   });
 
-  const findJob = useMutation({
-    mutationFn: (id: string) => getJob(id),
-    onSuccess: (data) => {
-      clientQuery.setQueryData(["job", data?._id as string], data);
-    },
-    onError: (error: unknown) => {
-      if (isAxiosError(error)) {
-        const message = error?.response?.data?.message || error.message;
-        toast.error(message);
-      }
-    },
+  const findJob = useQuery({
+    queryKey: ["job", id],
+    queryFn: async () => await getJob(id!),
+    enabled: false,
+    staleTime: Infinity,
   });
 
   const deleteJobById = useMutation({
     mutationFn: (id: string) => deleteJob(id),
-    onSuccess: async () => {
+    onSuccess: () => {
+      console.log("Job deleted successfully");
+      findJobs.refetch();
       toast.success("Job deleted successfully!");
-      await clientQuery.invalidateQueries(["jobs"] as InvalidateQueryFilters<
-        readonly unknown[]
-      >);
     },
     onError: (error: unknown) => {
       if (isAxiosError(error)) {
@@ -61,10 +53,28 @@ export const useJob = () => {
     },
   });
 
+  const jobs = findJobs.data || [];
+
+  useEffect(() => {
+    if (query) {
+      findJobs.refetch();
+    }
+  }, [query]);
+
+  useEffect(() => {
+    if (id) {
+      findJob.refetch();
+    }
+  }, [id]);
+
   return {
+    fetchJobs: findJobs.refetch,
+    setQuery,
     createJob: createNewJob,
     getJobs: findJobs,
     getJob: findJob,
     deleteJob: deleteJobById,
+    jobs,
+    isFindJobPending: findJobs.isPending,
   };
 };

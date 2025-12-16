@@ -1,15 +1,10 @@
+import { useParams } from "react-router-dom";
 import { Loading } from "@/components";
 import { useJob } from "@/hooks/useJob";
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
 
 export function JobDetails() {
   const { getJob } = useJob();
   const { id } = useParams();
-
-  useEffect(() => {
-    getJob.mutate(id!);
-  }, [id]);
 
   if (getJob.error) {
     return (
@@ -55,13 +50,13 @@ export function JobDetails() {
             </div>
             <div className="card-text mb-1">
               <strong>Qualifications: </strong>
-              <ul>
+              <ol>
                 {getJob.data?.qualifications?.map(
                   (qualification: string, index: number) => (
                     <li key={index}>{qualification}</li>
                   )
                 )}
-              </ul>
+              </ol>
             </div>
           </div>
         </div>
